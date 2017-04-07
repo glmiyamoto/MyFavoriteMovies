@@ -23,12 +23,9 @@ public class GsonRequest<T> extends Request<T> {
 	/**
 	 * Make a GET request and return a parsed object from JSON.
 	 *
-	 * @param url
-	 *            URL of the request to make
-	 * @param type
-	 *            Relevant class type object, for Gson's reflection
-	 * @param params
-	 *            Map of request headers
+	 * @param url URL of the request to make
+	 * @param type Relevant class type object, for Gson's reflection
+	 * @param params Map of request headers
 	 */
 	public GsonRequest(final String url, final Type type, final Map<String, String> params,
 					   final Listener<T> listener, final ErrorListener errorListener) {

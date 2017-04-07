@@ -31,19 +31,19 @@ public final class OmdbApiProvider {
 	}
 
 	public void searchMoviesByName(final String name, final Listener<OmdbObject> listener,
-								final ErrorListener errorListener) {
-        //final Type type = new TypeToken<List<Movie>>() {}.getType();
+								   final ErrorListener errorListener) {
+		//final Type type = new TypeToken<List<Movie>>() {}.getType();
 		final GsonRequest<OmdbObject> req = new GsonRequest<>(
-                URL_SEARCH_BY_NAME + name, OmdbObject.class, null, listener, errorListener);
+				URL_SEARCH_BY_NAME + name, OmdbObject.class, null, listener, errorListener);
 
 		// Add the request to the RequestQueue.
 		mServiceCtrl.addToRequestQueue(req);
 	}
 
 	public void getMovieById(final String id, final Listener<OmdbItemObject> listener,
-							   final ErrorListener errorListener) {
+							 final ErrorListener errorListener) {
 		final GsonRequest<OmdbItemObject> req = new GsonRequest<>(
-                URL_GET_BY_ID + id, OmdbItemObject.class, null, listener, errorListener);
+				URL_GET_BY_ID + id, OmdbItemObject.class, null, listener, errorListener);
 
 		// Add the request to the RequestQueue.
 		mServiceCtrl.addToRequestQueue(req);
