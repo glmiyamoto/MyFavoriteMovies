@@ -3,9 +3,10 @@ package com.glmiyamoto.myfavoritemovies;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,23 +46,26 @@ public class MainFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
-        final List<Movie> movies = MovieController.getInstance().getMovies();
 
         mViewHolder = new ViewHolder(view);
 
-        prepareCarouselView(movies);
+        mViewHolder.mCarouselView.setCarouselScrollListener(new CarouselView.CarouselScrollListener() {
+            @Override
+            public void onPositionChanged(final int position) {
 
-        mViewHolder.mRcyMovies.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new MovieListAdapter(getContext(), movies,
-                new MovieListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(final AdapterView<?> parent, final View view,
-                                            final int position, final String id) {
-                        showMovieDetail(id);
-                    }
-                });
-        mViewHolder.mRcyMovies.setAdapter(mAdapter);
-        mAdapter.loadPoster(0);
+            }
+
+            @Override
+            public void onPositionClicked(final int position) {
+                final Movie movie = (Movie) mViewHolder.mCarouselView.getItem(position).getTag();
+                showMovieDetail(movie.getId());
+            }
+        });
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mViewHolder.mRcyMovies.setLayoutManager(layoutManager);
+        mViewHolder.mRcyMovies.addItemDecoration(new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation()));
 
         return view;
     }
@@ -103,6 +107,26 @@ public class MainFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        final List<Movie> movies = MovieController.getInstance().getMovies();
+
+        prepareCarouselView(movies);
+
+        mAdapter = new MovieListAdapter(getContext(), movies,
+                new MovieListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(final AdapterView<?> parent, final View view,
+                                            final int position, final String id) {
+                        showMovieDetail(id);
+                    }
+                });
+        mViewHolder.mRcyMovies.setAdapter(mAdapter);
+        mAdapter.loadPoster(0);
+    }
+
     private void showMovieDetail(final String id) {
         mListener.onFragmentInteraction(FragmentInteraction.SHOW_PROGRESS, null);
 
@@ -127,14 +151,25 @@ public class MainFragment extends Fragment {
     }
 
     private void prepareCarouselView(List<Movie> movies) {
-        for (int i = 0; i < 10 && i < movies.size(); i++) {
+        // Remove all views
+        mViewHolder.mCarouselView.removeAllViews();
+        mViewHolder.mCarouselView.notifyDataSetChanged();
+
+        // Add views
+        for (int i = 0; i < movies.size(); i++) {
+            final Movie movie = movies.get(i);
             final ImageView imageView = new ImageView(getContext());
-            MovieController.getInstance().requestMoviePoster(movies.get(i), new MovieController.OnMoviePosterReceivedListener() {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+            imageView.setTag(movie);
+            mViewHolder.mCarouselView.addView(imageView);
+            mViewHolder.mCarouselView.notifyDataSetChanged();
+            MovieController.getInstance().requestMoviePoster(movie, new MovieController.OnMoviePosterReceivedListener() {
                 @Override
                 public void onMoviePosterReceived(Bitmap bitmap) {
-                    imageView.setImageBitmap(bitmap);
-                    mViewHolder.mCarouselView.addView(imageView);
-                    mViewHolder.mCarouselView.notifyDataSetChanged();
+                    if (bitmap != null) {
+                        imageView.setImageBitmap(bitmap);
+                        mViewHolder.mCarouselView.notifyDataSetChanged();
+                    }
                 }
             });
         }

@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
@@ -82,6 +85,10 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (mMovie != null) {
+            final String titleFormat = getString(R.string.item_title_format);
+            final String title = String.format(titleFormat, mMovie.getTitle(), mMovie.getYear());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(title);
+
             MovieController.getInstance().requestMoviePoster(mMovie,
                     new MovieController.OnMoviePosterReceivedListener() {
                 @Override
@@ -135,6 +142,9 @@ public class MovieFragment extends Fragment {
             case R.id.action_delete:
                 performRemoveMovie();
                 return true;
+            case android.R.id.home:
+                mListener.onFragmentInteraction(FragmentInteraction.CLOSE_ITEM_DETAIL, null);
+                return true;
             default:
                 break;
         }
@@ -151,11 +161,20 @@ public class MovieFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        // Enable UP button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
+        // Set app name to action bar
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
+
+        // Disable UP button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mListener = null;
     }
@@ -166,11 +185,23 @@ public class MovieFragment extends Fragment {
         if (MovieController.getInstance().insert(mMovie)) {
             final String fileName = mMovie.getId() + ".jpg";
             final Bitmap poster = ((BitmapDrawable)mViewHolder.mImgPoster.getDrawable()).getBitmap();
+
+            // Create a poster copy to original poster not be recycled
+            final Bitmap posterCopy = poster.copy(poster.getConfig(), poster.isMutable());
+
+            // Save poster to memory
             ImageController.getInstance().saveImageFile(fileName,
-                    poster, new ImageController.OnImageSavedListener() {
+                    posterCopy, new ImageController.OnImageSavedListener() {
                         @Override
                         public void onImageSaved(boolean success, Bundle args) {
+                            final String textFormat = getContext().getResources().getString(R.string.message_save_format);
+                            Toast.makeText(getContext(), String.format(textFormat, mMovie.getTitle()),
+                                    Toast.LENGTH_SHORT).show();
+
                             mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);
+
+                            mMenuHolder.mMenuItemSave.setVisible(false);
+                            mMenuHolder.mMenuItemDelete.setVisible(true);
                         }
                     });
         }
@@ -179,11 +210,20 @@ public class MovieFragment extends Fragment {
     public void performRemoveMovie() {
         if (MovieController.getInstance().delete(mMovie)) {
             final String fileName = mMovie.getId() + ".jpg";
+
+            // Remove poster from memory
             ImageController.getInstance().removeImageFile(fileName,
                     new ImageController.OnImageRemovedListener() {
                         @Override
                         public void onImageRemoved(boolean success, Bundle args) {
+                            final String textFormat = getContext().getResources().getString(R.string.message_delete_format);
+                            Toast.makeText(getContext(), String.format(textFormat, mMovie.getTitle()),
+                                    Toast.LENGTH_SHORT).show();
+
                             mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);
+
+                            mMenuHolder.mMenuItemSave.setVisible(true);
+                            mMenuHolder.mMenuItemDelete.setVisible(false);
                         }
                     });
         }

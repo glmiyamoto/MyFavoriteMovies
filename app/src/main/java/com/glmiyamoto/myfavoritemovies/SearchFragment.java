@@ -3,9 +3,12 @@ package com.glmiyamoto.myfavoritemovies;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -62,12 +65,18 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Enable Option Menu
+        setHasOptionsMenu(true);
+
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         mViewHolder = new ViewHolder(view);
 
-        mViewHolder.mRcySearch.setLayoutManager(new LinearLayoutManager(getContext()));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mViewHolder.mRcySearch.setLayoutManager(layoutManager);
+        mViewHolder.mRcySearch.addItemDecoration(new DividerItemDecoration(getContext(),
+                layoutManager.getOrientation()));
         mAdapter = new MovieListAdapter(getContext(), new ArrayList<Movie>(),
                 new OnItemClickListener() {
             @Override
@@ -96,6 +105,20 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -104,11 +127,18 @@ public class SearchFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        // Enable UP button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
+        // Disable UP button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         mListener = null;
     }
 

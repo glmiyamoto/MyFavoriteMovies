@@ -9,8 +9,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello word!</string>
 
-
-
     <string name="search_input_hint">Find movies...</string>
 
     <string name="item_title_format">%1$s (%2$s)</string>
@@ -22,5 +20,8 @@
     <string name="item_country">Country:</string>
     <string name="item_genre">Genre:</string>
     <string name="item_awards">Awards:</string>
+
+    <string name="message_save_format">\"%1$s\" was saved to favorite list</string>
+    <string name="message_delete_format">\"%1$s\" was deleted from favorite list</string>
 
 </resources>

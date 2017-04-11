@@ -92,7 +92,7 @@ public final class ImageUtils {
 
 	public static byte[] toBytes(final Bitmap bitmap) {
 		final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 100, arrayOutputStream);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, arrayOutputStream);
 		return arrayOutputStream.toByteArray();
 	}
 

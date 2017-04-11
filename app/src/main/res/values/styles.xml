@@ -17,4 +17,19 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="MyFavoriteMovies" />
+
+    <style name="MyFavoriteMovies.Item">
+        <item name="android:layout_marginTop">@dimen/item_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/item_margin_vertical</item>
+    </style>
+
+    <style name="MyFavoriteMovies.ItemTitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyFavoriteMovies.ItemText">
+        <item name="android:layout_marginLeft">@dimen/item_title_margin</item>
+    </style>
+
 </resources>

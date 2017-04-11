@@ -88,6 +88,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return mItems.size();
     }
 
+    public Movie getItem(final int position) {
+        return mItems.get(position);
+    }
+
     public void addAll(final List<? extends Movie> items) {
         if (items != null && items.size() > 0) {
             final int position = mItems.size() == 0 ? 0 : mItems.size();

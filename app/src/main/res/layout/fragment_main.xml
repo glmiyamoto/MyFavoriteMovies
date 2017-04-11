@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/main_layout_margin"
     android:orientation="vertical"
-    tools:context="com.glmiyamoto.myfavoritemovies.MainFragment"
-    tools:showIn="@layout/activity_main">
-    
-    <com.glmiyamoto.carousel.CarouselView
-        android:id="@+id/carousel_view"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+    tools:context="com.glmiyamoto.myfavoritemovies.MainFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_movies"
+    <LinearLayout
+        android:layout_margin="@dimen/main_layout_margin"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        app:layoutManager="LinearLayoutManager"
-        tools:context=".SearchActivity"
-        tools:listitem="@layout/view_search_item"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <com.glmiyamoto.carousel.CarouselView
+            android:id="@+id/carousel_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.4"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_movies"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="0.6"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".SearchActivity"
+            tools:listitem="@layout/view_search_item"/>
+
+    </LinearLayout>
+
+</FrameLayout>

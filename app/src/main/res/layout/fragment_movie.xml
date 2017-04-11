@@ -1,11 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@android:color/white"
-             tools:context="com.glmiyamoto.myfavoritemovies.MovieFragment">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.glmiyamoto.myfavoritemovies.MovieFragment">
 
     <ScrollView
+        android:layout_margin="@dimen/main_layout_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,15 +25,18 @@
 
             <!-- Writer -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_writer" />
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_writer"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -40,15 +45,18 @@
 
             <!-- Director -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_director" />
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_director"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -57,15 +65,18 @@
 
             <!-- Actors -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_actors"/>
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_actors"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -74,15 +85,18 @@
 
             <!-- Language -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_language"/>
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_language"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -91,15 +105,18 @@
 
             <!-- Country -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_country" />
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_country"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -108,15 +125,18 @@
 
             <!-- Genre -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_genre" />
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_genre"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -125,15 +145,18 @@
 
             <!-- Awards -->
             <LinearLayout
+                style="@style/MyFavoriteMovies.Item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/item_awards" />
 
                 <TextView
+                    style="@style/MyFavoriteMovies.ItemText"
                     android:id="@+id/text_view_awards"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"

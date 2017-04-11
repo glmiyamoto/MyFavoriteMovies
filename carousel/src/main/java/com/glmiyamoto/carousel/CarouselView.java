@@ -998,6 +998,14 @@ public class CarouselView extends CarouselSpinner implements GestureDetector.OnG
         mCarouselItems.add(carouselItem);
     }
 
+    public void removeAllViews() {
+        mCarouselItems.clear();
+    }
+
+    public View getItem(final int position) {
+        return mCarouselItems.get(position).getContentView();
+    }
+
     private void initCarouselView() {
         // It's needed to make items with greater value of
         // z coordinate to be behind items with lesser z-coordinate
