@@ -1,6 +1,8 @@
 package com.glmiyamoto.myfavoritemovies.controllers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import com.glmiyamoto.myfavoritemovies.datas.DbMovie;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
@@ -49,5 +51,47 @@ public class MovieController {
 
     public Movie getMovieById(final String id) {
         return mDbMovie.getMovieById(id);
+    }
+
+    public void requestMoviePoster(final Movie movie, final OnMoviePosterReceivedListener listener) {
+        final RequestMoviePosterTask task = new RequestMoviePosterTask(listener);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Movie[] { movie });
+    }
+
+    public class RequestMoviePosterTask extends AsyncTask<Movie, Void, Bitmap> {
+
+        private final OnMoviePosterReceivedListener mListener;
+
+        public RequestMoviePosterTask(final OnMoviePosterReceivedListener listener) {
+            mListener = listener;
+        }
+
+        @Override
+        protected Bitmap doInBackground(final Movie... movies) {
+            if (movies != null && movies.length > 0) {
+                final Movie movie = movies[0];
+                final String fileName = movie.getId() + ".jpg";
+                if (ImageController.getInstance().hasFile(fileName)) {
+                    return ImageController.getInstance().readImageFile(fileName);
+                }
+
+                return ImageController.getInstance().requestBitmapByUrl(movie.getPoster());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            if (mListener != null) {
+                mListener.onMoviePosterReceived(bitmap);
+            }
+        }
+    }
+
+    public interface OnMoviePosterReceivedListener {
+        void onMoviePosterReceived(Bitmap bitmap);
     }
 }

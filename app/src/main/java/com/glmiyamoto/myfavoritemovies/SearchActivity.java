@@ -12,7 +12,6 @@ import com.glmiyamoto.myfavoritemovies.views.FragmentType;
 
 public class SearchActivity extends AbstractActivity implements OnFragmentInteractionListener {
 
-    private DialogFragment mProgressDialog;
     private Fragment mDetailFragment;
 
     @Override

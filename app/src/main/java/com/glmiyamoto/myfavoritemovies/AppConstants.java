@@ -14,5 +14,6 @@ public final class AppConstants {
     public static final String PROGRESS_DIALOG_TAG = "progress_dialog";
 
     public static final String ITEM_KEY = "item";
-    public static final String ITEM_ID_KEY = "item_id";
+
+    public static final String FILE_NAME_ARG = "file_name_arg";
 }

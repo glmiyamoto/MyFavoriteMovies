@@ -119,6 +119,7 @@ public class SearchFragment extends Fragment {
                 public void onResponse(final OmdbObject obj) {
                     if (obj != null && obj.isResponse()) {
                         mAdapter.addAll(obj.getItems());
+                        mAdapter.loadPoster(0);
                     }
 
                     mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);

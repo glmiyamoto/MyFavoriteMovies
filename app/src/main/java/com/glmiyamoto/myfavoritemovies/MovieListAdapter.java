@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
+import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
 
 import java.util.HashMap;
@@ -94,8 +95,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             mItems.addAll(items);
 
             notifyDataSetChanged();
-
-            loadPoster(position);
         }
     }
 
@@ -110,10 +109,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public final void loadPoster(final int position) {
         if (position < getItemCount()) {
             final Movie item = mItems.get(position);
-            ImageController.getInstance().requestImageByUrl(item.getPoster(),
-                    new ImageController.OnReceivedImageListener() {
+            MovieController.getInstance().requestMoviePoster(item,
+                    new MovieController.OnMoviePosterReceivedListener() {
                         @Override
-                        public void onReceivedImage(Bitmap bitmap) {
+                        public void onMoviePosterReceived(Bitmap bitmap) {
                 if (bitmap != null) {
                     mPosters.put(item.getId(), bitmap);
                     notifyItemChanged(position);

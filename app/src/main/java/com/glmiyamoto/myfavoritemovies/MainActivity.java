@@ -1,10 +1,14 @@
 package com.glmiyamoto.myfavoritemovies;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
+import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
+import com.glmiyamoto.myfavoritemovies.files.ImageFileExplorer;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.views.AbstractActivity;
 import com.glmiyamoto.myfavoritemovies.views.DialogFragmentType;
@@ -14,21 +18,30 @@ import com.glmiyamoto.myfavoritemovies.views.FragmentType;
 
 public class MainActivity extends AbstractActivity implements OnFragmentInteractionListener {
 
-    private DialogFragment mProgressDialog;
     private Fragment mDetailFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize controller
+        // Initialize controllers
         MovieController.getInstance().init(this.getApplicationContext());
+        ImageController.getInstance().init(this.getApplicationContext());
 
         // Set content views
         setContentView(R.layout.activity_main);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDetailFragment != null) {
+            onFragmentInteraction(FragmentInteraction.CLOSE_ITEM_DETAIL, null);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

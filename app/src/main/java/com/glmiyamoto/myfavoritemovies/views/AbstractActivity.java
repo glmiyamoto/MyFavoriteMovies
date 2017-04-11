@@ -1,6 +1,9 @@
 package com.glmiyamoto.myfavoritemovies.views;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.UiThread;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public abstract class AbstractActivity extends AppCompatActivity {
+
+    protected DialogFragment mProgressDialog;
 
     public Fragment addFragmentByType(final FragmentType fragmentsType,
                                       final Bundle bundle, final int containerViewId) {

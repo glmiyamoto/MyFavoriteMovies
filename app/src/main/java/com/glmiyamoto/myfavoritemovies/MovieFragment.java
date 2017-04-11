@@ -2,6 +2,7 @@ package com.glmiyamoto.myfavoritemovies;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -81,10 +82,10 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (mMovie != null) {
-            ImageController.getInstance().requestImageByUrl(mMovie.getPoster(),
-                    new ImageController.OnReceivedImageListener() {
+            MovieController.getInstance().requestMoviePoster(mMovie,
+                    new MovieController.OnMoviePosterReceivedListener() {
                 @Override
-                public void onReceivedImage(final Bitmap bitmap) {
+                public void onMoviePosterReceived(final Bitmap bitmap) {
                     if (bitmap != null) {
                         mViewHolder.mImgPoster.setImageBitmap(bitmap);
                     }
@@ -106,8 +107,20 @@ public class MovieFragment extends Fragment {
         inflater.inflate(R.menu.menu_movie, menu);
 
         mMenuHolder = new MenuHolder(menu);
-//        mMenuHolder.mMenuItemSave.setVisible(false);
-//        mMenuHolder.mMenuItemDelete.setVisible(false);
+        if (mMenuHolder.mMenuItemSearch != null) {
+            mMenuHolder.mMenuItemSearch.setVisible(false);
+        }
+
+        if (mMovie == null) {
+            mMenuHolder.mMenuItemSave.setVisible(false);
+            mMenuHolder.mMenuItemDelete.setVisible(false);
+        } else if (MovieController.getInstance().getMovieById(mMovie.getId()) != null) {
+            mMenuHolder.mMenuItemSave.setVisible(false);
+            mMenuHolder.mMenuItemDelete.setVisible(true);
+        } else {
+            mMenuHolder.mMenuItemSave.setVisible(true);
+            mMenuHolder.mMenuItemDelete.setVisible(false);
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -117,12 +130,10 @@ public class MovieFragment extends Fragment {
         final int id = item.getItemId();
         switch (id) {
             case R.id.action_save:
-                MovieController.getInstance().insert(mMovie);
-                mListener.onFragmentInteraction(FragmentInteraction.CLOSE_ITEM_DETAIL, null);
+                performSaveMovie();
                 return true;
             case R.id.action_delete:
-                MovieController.getInstance().delete(mMovie);
-                mListener.onFragmentInteraction(FragmentInteraction.CLOSE_ITEM_DETAIL, null);
+                performRemoveMovie();
                 return true;
             default:
                 break;
@@ -147,6 +158,35 @@ public class MovieFragment extends Fragment {
         super.onDetach();
 
         mListener = null;
+    }
+
+    public void performSaveMovie() {
+        mListener.onFragmentInteraction(FragmentInteraction.SHOW_PROGRESS, null);
+
+        if (MovieController.getInstance().insert(mMovie)) {
+            final String fileName = mMovie.getId() + ".jpg";
+            final Bitmap poster = ((BitmapDrawable)mViewHolder.mImgPoster.getDrawable()).getBitmap();
+            ImageController.getInstance().saveImageFile(fileName,
+                    poster, new ImageController.OnImageSavedListener() {
+                        @Override
+                        public void onImageSaved(boolean success, Bundle args) {
+                            mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);
+                        }
+                    });
+        }
+    }
+
+    public void performRemoveMovie() {
+        if (MovieController.getInstance().delete(mMovie)) {
+            final String fileName = mMovie.getId() + ".jpg";
+            ImageController.getInstance().removeImageFile(fileName,
+                    new ImageController.OnImageRemovedListener() {
+                        @Override
+                        public void onImageRemoved(boolean success, Bundle args) {
+                            mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);
+                        }
+                    });
+        }
     }
 
     public class ViewHolder {
@@ -177,13 +217,15 @@ public class MovieFragment extends Fragment {
 
     public class MenuHolder {
         public Menu mMenu;
+        public MenuItem mMenuItemSearch;
         public MenuItem mMenuItemSave;
         public MenuItem mMenuItemDelete;
 
         public  MenuHolder(final Menu menu) {
             mMenu = menu;
-            mMenuItemSave = menu.getItem(0);
-            mMenuItemDelete = menu.getItem(1);
+            mMenuItemSearch = menu.findItem(R.id.action_search);
+            mMenuItemSave = menu.findItem(R.id.action_save);
+            mMenuItemDelete = menu.findItem(R.id.action_delete);
         }
     }
 }
