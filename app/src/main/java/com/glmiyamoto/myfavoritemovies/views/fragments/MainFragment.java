@@ -1,11 +1,10 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +17,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.glmiyamoto.myfavoritemovies.AppConstants;
+import com.glmiyamoto.myfavoritemovies.views.adapters.MovieListAdapter;
+import com.glmiyamoto.myfavoritemovies.R;
+import com.glmiyamoto.myfavoritemovies.views.SearchActivity;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction.OnFragmentInteractionListener;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction.OnFragmentInteractionListener;
 import com.glmiyamoto.carousel.CarouselView;
 
 import java.util.List;
@@ -52,7 +54,8 @@ public class MainFragment extends Fragment {
         mViewHolder.mCarouselView.setCarouselScrollListener(new CarouselView.CarouselScrollListener() {
             @Override
             public void onPositionChanged(final int position) {
-
+                mAdapter.setSelectedItem(position);
+                mViewHolder.mRcyMovies.scrollToPosition(position);
             }
 
             @Override
@@ -120,11 +123,21 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onItemClick(final AdapterView<?> parent, final View view,
                                             final int position, final String id) {
+                        mViewHolder.mCarouselView.scrollToChild(position);
                         showMovieDetail(id);
                     }
                 });
         mViewHolder.mRcyMovies.setAdapter(mAdapter);
         mAdapter.loadPoster(0);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Remove all views from Carousel View
+        mViewHolder.mCarouselView.removeAllViews();
+        mViewHolder.mCarouselView.notifyDataSetChanged();
     }
 
     private void showMovieDetail(final String id) {
@@ -151,10 +164,6 @@ public class MainFragment extends Fragment {
     }
 
     private void prepareCarouselView(List<Movie> movies) {
-        // Remove all views
-        mViewHolder.mCarouselView.removeAllViews();
-        mViewHolder.mCarouselView.notifyDataSetChanged();
-
         // Add views
         for (int i = 0; i < movies.size(); i++) {
             final Movie movie = movies.get(i);

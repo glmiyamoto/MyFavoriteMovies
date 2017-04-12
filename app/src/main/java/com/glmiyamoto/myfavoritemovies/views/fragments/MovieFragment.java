@@ -1,11 +1,10 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -18,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.glmiyamoto.myfavoritemovies.AppConstants;
+import com.glmiyamoto.myfavoritemovies.views.MainActivity;
+import com.glmiyamoto.myfavoritemovies.R;
 import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction.OnFragmentInteractionListener;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction.OnFragmentInteractionListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -173,8 +174,10 @@ public class MovieFragment extends Fragment {
         // Set app name to action bar
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 
-        // Disable UP button
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getActivity() instanceof MainActivity) {
+            // Disable UP button
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         mListener = null;
     }

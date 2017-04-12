@@ -24,4 +24,6 @@
     <string name="message_save_format">\"%1$s\" was saved to favorite list</string>
     <string name="message_delete_format">\"%1$s\" was deleted from favorite list</string>
 
+    <string name="message_network_is_require">Network connection is required to search information. Please check you network.</string>
+
 </resources>

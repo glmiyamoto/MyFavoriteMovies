@@ -1,14 +1,14 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
+import com.glmiyamoto.myfavoritemovies.R;
 import com.glmiyamoto.myfavoritemovies.views.AbstractActivity;
-import com.glmiyamoto.myfavoritemovies.views.DialogFragmentType;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction.OnFragmentInteractionListener;
-import com.glmiyamoto.myfavoritemovies.views.FragmentType;
+import com.glmiyamoto.myfavoritemovies.views.dialogs.DialogFragmentType;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction.OnFragmentInteractionListener;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentType;
 
 public class SearchActivity extends AbstractActivity implements OnFragmentInteractionListener {
 

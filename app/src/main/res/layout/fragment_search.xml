@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/main_layout_margin"
-    tools:context="com.glmiyamoto.myfavoritemovies.SearchFragment">
+    tools:context="com.glmiyamoto.myfavoritemovies.views.fragments.SearchFragment">
 
     <LinearLayout
         android:layout_margin="@dimen/main_layout_margin"
@@ -45,7 +45,7 @@
             android:layout_height="0dip"
             android:layout_weight="1"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".SearchActivity"
+            tools:context=".views.SearchActivity"
             tools:listitem="@layout/view_search_item"/>
 
     </LinearLayout>

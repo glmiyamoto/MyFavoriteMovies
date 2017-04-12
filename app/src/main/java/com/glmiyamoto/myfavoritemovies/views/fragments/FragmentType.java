@@ -1,9 +1,8 @@
-package com.glmiyamoto.myfavoritemovies.views;
+package com.glmiyamoto.myfavoritemovies.views.fragments;
 
 import android.support.v4.app.Fragment;
 
 import com.glmiyamoto.myfavoritemovies.AppConstants;
-import com.glmiyamoto.myfavoritemovies.MovieFragment;
 
 /**
  * Created by glmiyamoto on 4/4/17.

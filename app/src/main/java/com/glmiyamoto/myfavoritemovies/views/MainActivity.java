@@ -1,20 +1,17 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
+import com.glmiyamoto.myfavoritemovies.R;
 import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
-import com.glmiyamoto.myfavoritemovies.files.ImageFileExplorer;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.views.AbstractActivity;
-import com.glmiyamoto.myfavoritemovies.views.DialogFragmentType;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction.OnFragmentInteractionListener;
-import com.glmiyamoto.myfavoritemovies.views.FragmentType;
+import com.glmiyamoto.myfavoritemovies.views.dialogs.DialogFragmentType;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction.OnFragmentInteractionListener;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentType;
 
 public class MainActivity extends AbstractActivity implements OnFragmentInteractionListener {
 

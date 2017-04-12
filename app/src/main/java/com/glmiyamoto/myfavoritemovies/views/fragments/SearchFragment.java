@@ -1,30 +1,38 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.glmiyamoto.myfavoritemovies.AppConstants;
+import com.glmiyamoto.myfavoritemovies.R;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
 import com.glmiyamoto.myfavoritemovies.models.OmdbObject;
 import com.glmiyamoto.myfavoritemovies.models.OmdbItemObject;
 import com.glmiyamoto.myfavoritemovies.utils.DeviceUtils;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction;
-import com.glmiyamoto.myfavoritemovies.views.FragmentInteraction.OnFragmentInteractionListener;
+import com.glmiyamoto.myfavoritemovies.utils.NetworkUtils;
+import com.glmiyamoto.myfavoritemovies.views.adapters.MovieListAdapter;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentInteraction.OnFragmentInteractionListener;
 import com.glmiyamoto.myfavoritemovies.webservices.OmdbApiProvider;
-import com.glmiyamoto.myfavoritemovies.MovieListAdapter.OnItemClickListener;
+import com.glmiyamoto.myfavoritemovies.views.adapters.MovieListAdapter.OnItemClickListener;
 
 import java.util.ArrayList;
 
@@ -58,13 +66,13 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Enable Option Menu
         setHasOptionsMenu(true);
 
@@ -87,13 +95,22 @@ public class SearchFragment extends Fragment {
         });
         mViewHolder.mRcySearch.setAdapter(mAdapter);
 
+        mViewHolder.mEtxSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(final TextView textView, final int actionId, final KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    final String text = mViewHolder.mEtxSearch.getText().toString();
+                    searchMovies(text);
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         mViewHolder.mIbtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                // Show progress dialog
-                mListener.onFragmentInteraction(FragmentInteraction.SHOW_PROGRESS, null);
-
-                // Request
                 final String text = mViewHolder.mEtxSearch.getText().toString();
                 searchMovies(text);
 
@@ -119,7 +136,7 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(final Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -143,7 +160,17 @@ public class SearchFragment extends Fragment {
     }
 
     private void searchMovies(final String text) {
+        if (!NetworkUtils.hasNetwork(getContext())) {
+            showMessageDialog(R.string.message_network_is_require);
+            return;
+        }
+
+        mAdapter.removeAll();
+
         if (!text.isEmpty()) {
+            // Show progress dialog
+            mListener.onFragmentInteraction(FragmentInteraction.SHOW_PROGRESS, null);
+
             OmdbApiProvider.getInstance().searchMoviesByName(text, new Response.Listener<OmdbObject>() {
                 @Override
                 public void onResponse(final OmdbObject obj) {
@@ -183,6 +210,17 @@ public class SearchFragment extends Fragment {
                 mListener.onFragmentInteraction(FragmentInteraction.HIDE_PROGRESS, null);
             }
         });
+    }
+
+    /**
+     * Shows message dialog
+     */
+    public void showMessageDialog(final int messageId) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(messageId)
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
 
     public class ViewHolder {

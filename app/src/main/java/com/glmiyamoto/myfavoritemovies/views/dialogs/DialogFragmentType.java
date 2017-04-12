@@ -1,9 +1,8 @@
-package com.glmiyamoto.myfavoritemovies.views;
+package com.glmiyamoto.myfavoritemovies.views.dialogs;
 
 import android.support.v4.app.DialogFragment;
 
 import com.glmiyamoto.myfavoritemovies.AppConstants;
-import com.glmiyamoto.myfavoritemovies.dialogs.ProgressDialog;
 
 /**
  * Created by glmiyamoto on 4/4/17.

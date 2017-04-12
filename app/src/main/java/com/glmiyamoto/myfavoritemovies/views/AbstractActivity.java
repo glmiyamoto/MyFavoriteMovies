@@ -1,12 +1,12 @@
 package com.glmiyamoto.myfavoritemovies.views;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.UiThread;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import com.glmiyamoto.myfavoritemovies.views.dialogs.DialogFragmentType;
+import com.glmiyamoto.myfavoritemovies.views.fragments.FragmentType;
 
 /**
  * Created by glmiyamoto on 4/4/17.

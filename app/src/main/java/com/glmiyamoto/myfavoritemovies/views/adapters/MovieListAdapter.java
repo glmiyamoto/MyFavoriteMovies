@@ -1,4 +1,4 @@
-package com.glmiyamoto.myfavoritemovies;
+package com.glmiyamoto.myfavoritemovies.views.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.glmiyamoto.myfavoritemovies.controllers.ImageController;
+import com.glmiyamoto.myfavoritemovies.R;
 import com.glmiyamoto.myfavoritemovies.controllers.MovieController;
 import com.glmiyamoto.myfavoritemovies.models.Movie;
 
@@ -92,6 +92,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return mItems.get(position);
     }
 
+    public void setSelectedItem(final int position) {
+        notifyItemChanged(mSelectedItemPosition);
+        mSelectedItemPosition = position;
+        notifyItemChanged(position);
+    }
+
     public void addAll(final List<? extends Movie> items) {
         if (items != null && items.size() > 0) {
             final int position = mItems.size() == 0 ? 0 : mItems.size();
@@ -100,6 +106,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
             notifyDataSetChanged();
         }
+    }
+
+    public void removeAll() {
+        mItems.clear();
+        notifyDataSetChanged();
     }
 
     public void resume() {

@@ -1,4 +1,4 @@
-package com.glmiyamoto.myfavoritemovies.dialogs;
+package com.glmiyamoto.myfavoritemovies.views.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
